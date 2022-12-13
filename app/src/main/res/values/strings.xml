@@ -82,4 +82,15 @@
     <string name="addVanError">Failed to add van!</string>
     <string name="menu_van">Vans</string>
     <string name="add_van">Add Van</string>
+
+
+
+
+
+    <string name="emailpassword_title_text">Please Login Below</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="hint_email">Email</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="verify_email">Verify Email</string>
+    <string name="auth_failed">Failed to authorise!</string>
 </resources>

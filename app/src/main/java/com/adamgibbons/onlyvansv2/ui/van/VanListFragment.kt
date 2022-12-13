@@ -40,7 +40,7 @@ class VanListFragment : Fragment(), VanListener {
         setupMenu()
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         binding.fab.setOnClickListener {
-            val action = VanListFragmentDirections.actionVanListFragmentToVanAddFragment()
+            val action = VanListFragmentDirections.actionHomeFragmentToVanAddFragment()
             findNavController().navigate(action)
         }
         vanListViewModel.observableVansList.observe(viewLifecycleOwner, Observer {
@@ -70,7 +70,7 @@ class VanListFragment : Fragment(), VanListener {
     }
 
     override fun onVanClick(van: VanModel) {
-        val action = VanListFragmentDirections.actionVanListFragmentToVanDetailFragment(van.id)
+        val action = VanListFragmentDirections.actionHomeFragmentToVanDetailFragment(van.id)
         findNavController().navigate(action)
     }
 
@@ -90,5 +90,10 @@ class VanListFragment : Fragment(), VanListener {
                     requireView().findNavController())
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        vanListViewModel.load()
     }
 }

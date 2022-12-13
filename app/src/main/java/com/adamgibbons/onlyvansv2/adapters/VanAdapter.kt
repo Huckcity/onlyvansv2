@@ -32,7 +32,7 @@ class VanAdapter constructor(private var vans: List<VanModel>,
         notifyItemRemoved(position)
     }
 
-    class MainHolder(private val binding : CardVanBinding) :
+    class MainHolder(val binding : CardVanBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(van: VanModel, listener: VanListener) {
@@ -42,6 +42,7 @@ class VanAdapter constructor(private var vans: List<VanModel>,
                 binding.imageIcon.setImageBitmap(decodeImage(van.image64))
             }
             binding.root.setOnClickListener { listener.onVanClick(van) }
+            binding.executePendingBindings()
         }
     }
 

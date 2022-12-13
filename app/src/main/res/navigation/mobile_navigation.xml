@@ -3,24 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/vanListFragment">
+    app:startDestination="@+id/homeFragment">
 
     <fragment
-        android:id="@+id/vanListFragment"
+        android:id="@+id/homeFragment"
         android:name="com.adamgibbons.onlyvansv2.ui.van.VanListFragment"
         android:label="@string/action_van"
-        tools:layout="@layout/fragment_van_list" >
+        tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_vanListFragment_to_vanDetailFragment"
+            android:id="@+id/action_homeFragment_to_vanDetailFragment"
             app:destination="@id/vanDetailFragment"
-            app:popUpTo="@id/mobile_navigation"
-            app:popUpToInclusive="true"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
         <action
-            android:id="@+id/action_vanListFragment_to_vanAddFragment"
-            app:destination="@id/vanAddFragment"
-            app:popUpToInclusive="false" />
+            android:id="@+id/action_homeFragment_to_vanAddFragment"
+            app:destination="@id/vanAddFragment" />
     </fragment>
 
     <fragment
@@ -34,9 +31,6 @@
         android:name="com.adamgibbons.onlyvansv2.ui.van.VanDetailFragment"
         android:label="Van Details"
         tools:layout="@layout/fragment_van_detail" >
-        <action
-            android:id="@+id/action_vanDetailFragment_to_vanListFragment"
-            app:destination="@id/vanListFragment" />
         <argument
             android:name="vanid"
             app:argType="string" />
@@ -49,7 +43,7 @@
         tools:layout="@layout/fragment_van_add" >
         <action
             android:id="@+id/action_vanAddFragment_to_vanListFragment"
-            app:destination="@id/vanListFragment"
+            app:destination="@id/home"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"/>
     </fragment>

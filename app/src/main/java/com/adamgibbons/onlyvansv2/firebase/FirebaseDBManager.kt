@@ -3,16 +3,12 @@ package com.adamgibbons.onlyvansv2.firebase
 import androidx.lifecycle.MutableLiveData
 import com.adamgibbons.onlyvansv2.models.VanModel
 import com.adamgibbons.onlyvansv2.models.VanStore
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import timber.log.Timber
 
 object FirebaseDBManager : VanStore {
 
     var database: DatabaseReference = FirebaseDatabase.getInstance().reference
-    override fun findById(id: String): VanModel {
-        TODO("Not yet implemented")
-    }
 
     override fun findAll(vanList: MutableLiveData<List<VanModel>>) {
         database.child("vans")
@@ -59,16 +55,15 @@ object FirebaseDBManager : VanStore {
 //            })
 //    }
 
-//    override fun findById(userid: String, donationid: String, donation: MutableLiveData<DonationModel>) {
-//
-//        database.child("user-donations").child(userid)
-//            .child(donationid).get().addOnSuccessListener {
-//                donation.value = it.getValue(DonationModel::class.java)
-//                Timber.i("firebase Got value ${it.value}")
-//            }.addOnFailureListener{
-//                Timber.e("firebase Error getting data $it")
-//            }
-//    }
+    override fun findById(van: MutableLiveData<VanModel>, id: String) {
+
+        database.child("vans").child(id).get().addOnSuccessListener {
+            van.value = it.getValue(VanModel::class.java)
+            Timber.i("Van Found: ${it.value}")
+        }.addOnFailureListener{
+            Timber.e("Could not find van: $it")
+        }
+    }
 
     override fun create(van: VanModel) {
         Timber.i("Firebase DB Reference : $database")

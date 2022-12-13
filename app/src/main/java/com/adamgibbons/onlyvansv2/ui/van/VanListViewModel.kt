@@ -18,7 +18,7 @@ class VanListViewModel : ViewModel() {
         load()
     }
 
-    private fun load() {
+    fun load() {
         try {
             FirebaseDBManager.findAll(vanList)
         } catch(e: Exception) {
