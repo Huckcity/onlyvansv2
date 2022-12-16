@@ -3,12 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <variable
-            name="van"
-            type="com.adamgibbons.onlyvansv2.models.VanModel" />
-    </data>
-
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +17,7 @@
             android:padding="16dp">
 
             <ImageView
-                android:id="@+id/imageIcon"
+                android:id="@+id/vanThumbnail"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_marginTop="4dp"
@@ -43,7 +37,7 @@
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.048"
-                app:layout_constraintStart_toEndOf="@+id/imageIcon"
+                app:layout_constraintStart_toEndOf="@+id/vanThumbnail"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="The Title"/>
 
@@ -55,7 +49,7 @@
                 android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.052"
-                app:layout_constraintStart_toEndOf="@+id/imageIcon"
+                app:layout_constraintStart_toEndOf="@+id/vanThumbnail"
                 app:layout_constraintTop_toBottomOf="@id/vanTitle"
                 tools:text="The Description"/>
 

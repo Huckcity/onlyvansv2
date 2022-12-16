@@ -21,8 +21,8 @@ object FirebaseDBManager : VanStore {
                     val localList = ArrayList<VanModel>()
                     val children = snapshot.children
                     children.forEach {
-                        val donation = it.getValue(VanModel::class.java)
-                        localList.add(donation!!)
+                        val van = it.getValue(VanModel::class.java)
+                        localList.add(van!!)
                     }
                     database.child("vans")
                         .removeEventListener(this)
@@ -68,18 +68,17 @@ object FirebaseDBManager : VanStore {
     override fun create(van: VanModel) {
         Timber.i("Firebase DB Reference : $database")
 
-//        val uid = firebaseUser.value!!.uid
         val key = database.child("vans").push().key
         if (key == null) {
             Timber.i("Firebase Error : Key Empty")
             return
         }
         van.id = key
-        val vanValues = van.toMap()
+        FirebaseImageManager.updateVanImage(van, van.imageUri, false)
 
+        val vanValues = van.toMap()
         val childAdd = HashMap<String, Any>()
         childAdd["/vans/$key"] = vanValues
-//        childAdd["/user-vans/$id/$key"] = donationValues
 
         database.updateChildren(childAdd)
     }
@@ -112,24 +111,4 @@ object FirebaseDBManager : VanStore {
 //        database.updateChildren(childUpdate)
 //    }
 
-    fun updateImageRef(userid: String,imageUri: String) {
-
-        val userVans = database.child("user-vans").child(userid)
-        val allVans = database.child("vans")
-
-        userVans.addListenerForSingleValueEvent(
-            object : ValueEventListener {
-                override fun onCancelled(error: DatabaseError) {}
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    snapshot.children.forEach {
-                        //Update Users imageUri
-                        it.ref.child("profilepic").setValue(imageUri)
-                        //Update all donations that match 'it'
-                        val van = it.getValue(VanModel::class.java)
-                        allVans.child(van!!.id!!)
-                            .child("profilepic").setValue(imageUri)
-                    }
-                }
-            })
-    }
 }

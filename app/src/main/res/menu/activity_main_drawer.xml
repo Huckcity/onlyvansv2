@@ -13,4 +13,12 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/menu_gallery" />
     </group>
+
+    <group>
+        <item
+            android:id="@+id/signout"
+            android:icon="@android:drawable/ic_menu_revert"
+            android:onClick="signOut"
+            android:title="@string/sign_out" />
+    </group>
 </menu>

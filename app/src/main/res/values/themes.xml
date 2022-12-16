@@ -26,15 +26,11 @@
 <!--    </style>-->
 
     <style name="customRoundedImageView" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">8dp</item>
+        <item name="cornerSize">20dp</item>
     </style>
 
     <style name="Theme.OnlyVansV2.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="Theme.OnlyVansV2.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
     <style name="ThemeOverlay.MyLightEditText" parent="ThemeOverlay.AppCompat.Dark"/>
 
     <style name="ThemeOverlay.MyTextDetail" parent="Theme.OnlyVansV2">

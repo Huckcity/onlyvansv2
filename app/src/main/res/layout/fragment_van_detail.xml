@@ -30,18 +30,19 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/vanImage"
                     android:layout_margin="16dp"
+                    app:shapeAppearanceOverlay="@style/customRoundedImageView"
+                    app:strokeColor="@color/purple_500"
+                    app:strokeWidth="5dp"
+                    android:padding="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scaleType="centerInside"
-                    android:adjustViewBounds="true"
-                    app:srcCompat="@mipmap/ic_launcher"
+                    app:imageUrl="@{vm.van.imageUri}"
                     android:contentDescription="@string/currently_selected_image" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/vanTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_title"
                     android:layout_margin="16dp"
                     android:text="@{vm.van.title}" />
 
@@ -49,24 +50,29 @@
                     android:id="@+id/vanDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_description"
                     android:layout_margin="16dp"
                     android:text="@{vm.van.description}" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/vanEngineSize"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="@{Double.toString(vm.van.engine)}"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/vanYear"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="@{Integer.toString(vm.van.year)}"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/vanColor"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="@{vm.van.color}"/>
 
             </LinearLayout>
         </ScrollView>

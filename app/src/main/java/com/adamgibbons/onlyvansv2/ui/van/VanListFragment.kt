@@ -26,10 +26,6 @@ class VanListFragment : Fragment(), VanListener {
     private val binding get() = _binding!!
     private val vanListViewModel : VanListViewModel by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
