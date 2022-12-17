@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,6 +22,7 @@ import com.adamgibbons.onlyvansv2.databinding.FragmentVanAddBinding
 import com.adamgibbons.onlyvansv2.helpers.showImagePicker
 import com.adamgibbons.onlyvansv2.models.Location
 import com.adamgibbons.onlyvansv2.models.VanModel
+import com.adamgibbons.onlyvansv2.ui.login.LoggedInViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import timber.log.Timber
@@ -35,6 +37,8 @@ class VanAddFragment : Fragment() {
     private lateinit var vanAddViewModel: VanAddViewModel
     private var location = Location(52.245696, -7.139102, 15f)
     private lateinit var imageUri: String
+    private val loggedInViewModel : LoggedInViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -106,7 +110,8 @@ class VanAddFragment : Fragment() {
                 year = binding.yearPicker.text.toString().toInt(),
                 location = location,
                 imageUri = imageUri
-            ))
+            ),
+            loggedInViewModel.liveFirebaseUser)
 
         } catch (exception: java.lang.Exception) {
             Timber.i("All fields are required $exception")

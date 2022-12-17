@@ -13,7 +13,8 @@ data class VanModel(
     var color: String = "",
     var year: Int = 2022,
     var engine: Double = 2.0,
-    var location: Location = Location()
+    var location: Location = Location(),
+    var userid: String = ""
 ) : Parcelable {
     @Exclude
     fun toMap(): Map<String, Any?> {
