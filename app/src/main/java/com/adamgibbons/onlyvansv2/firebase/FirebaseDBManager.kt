@@ -3,6 +3,7 @@ package com.adamgibbons.onlyvansv2.firebase
 import androidx.lifecycle.MutableLiveData
 import com.adamgibbons.onlyvansv2.models.VanModel
 import com.adamgibbons.onlyvansv2.models.VanStore
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import timber.log.Timber
 
@@ -32,28 +33,31 @@ object FirebaseDBManager : VanStore {
             })
     }
 
-//    override fun findAll(userid: String, donationsList: MutableLiveData<List<DonationModel>>) {
-//
-//        database.child("user-donations").child(userid)
-//            .addValueEventListener(object : ValueEventListener {
-//                override fun onCancelled(error: DatabaseError) {
-//                    Timber.i("Firebase Donation error : ${error.message}")
-//                }
-//
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    val localList = ArrayList<DonationModel>()
-//                    val children = snapshot.children
-//                    children.forEach {
-//                        val donation = it.getValue(DonationModel::class.java)
-//                        localList.add(donation!!)
-//                    }
-//                    database.child("user-donations").child(userid)
-//                        .removeEventListener(this)
-//
-//                    donationsList.value = localList
-//                }
-//            })
-//    }
+    override fun findAllByUser(
+        vanList: MutableLiveData<List<VanModel>>,
+        userId: String
+    ) {
+
+        database.child("vans").orderByChild("userid").equalTo(userId)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<VanModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val van = it.getValue(VanModel::class.java)
+                        localList.add(van!!)
+                    }
+                    database.child("vans").child(userId)
+                        .removeEventListener(this)
+
+                    vanList.value = localList
+                }
+            })
+    }
 
     override fun findById(van: MutableLiveData<VanModel>, id: String) {
 
@@ -65,15 +69,17 @@ object FirebaseDBManager : VanStore {
         }
     }
 
-    override fun create(van: VanModel) {
+    override fun create(van: VanModel, user: MutableLiveData<FirebaseUser>) {
         Timber.i("Firebase DB Reference : $database")
 
+        val uid = user.value!!.uid
         val key = database.child("vans").push().key
         if (key == null) {
             Timber.i("Firebase Error : Key Empty")
             return
         }
         van.id = key
+        van.userid = uid
         FirebaseImageManager.updateVanImage(van, van.imageUri, false)
 
         val vanValues = van.toMap()

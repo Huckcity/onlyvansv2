@@ -19,12 +19,14 @@ import com.adamgibbons.onlyvansv2.adapters.VanAdapter
 import com.adamgibbons.onlyvansv2.adapters.VanListener
 import com.adamgibbons.onlyvansv2.databinding.FragmentVanListBinding
 import com.adamgibbons.onlyvansv2.models.VanModel
+import com.adamgibbons.onlyvansv2.ui.login.LoggedInViewModel
 
 class VanListFragment : Fragment(), VanListener {
 
     private var _binding: FragmentVanListBinding? = null
     private val binding get() = _binding!!
     private val vanListViewModel : VanListViewModel by activityViewModels()
+    private val loggedInViewModel: LoggedInViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -90,6 +92,11 @@ class VanListFragment : Fragment(), VanListener {
 
     override fun onResume() {
         super.onResume()
-        vanListViewModel.load()
+        loggedInViewModel.liveFirebaseUser.observe(viewLifecycleOwner, Observer { firebaseUser ->
+            if (firebaseUser != null) {
+                vanListViewModel.user.value = firebaseUser
+                vanListViewModel.load()
+            }
+        })
     }
 }
