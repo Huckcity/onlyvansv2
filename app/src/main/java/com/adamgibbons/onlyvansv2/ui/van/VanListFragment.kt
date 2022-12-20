@@ -13,13 +13,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.adamgibbons.onlyvansv2.R
 import com.adamgibbons.onlyvansv2.adapters.VanAdapter
 import com.adamgibbons.onlyvansv2.adapters.VanListener
 import com.adamgibbons.onlyvansv2.databinding.FragmentVanListBinding
+import com.adamgibbons.onlyvansv2.helpers.SwipeToDeleteCallback
 import com.adamgibbons.onlyvansv2.models.VanModel
 import com.adamgibbons.onlyvansv2.ui.login.LoggedInViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class VanListFragment : Fragment(), VanListener {
 
@@ -34,8 +38,8 @@ class VanListFragment : Fragment(), VanListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentVanListBinding.inflate(inflater, container, false)
-        val root: View = binding.root
         setupMenu()
+
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         binding.fab.setOnClickListener {
             val action = VanListFragmentDirections.actionHomeFragmentToVanAddFragment()
@@ -48,11 +52,24 @@ class VanListFragment : Fragment(), VanListener {
             }
         })
 
-        return root
+        return binding.root
     }
 
     private fun render(vanList: ArrayList<VanModel>) {
         binding.recyclerView.adapter = VanAdapter(vanList,this)
+        val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = binding.recyclerView.adapter as VanAdapter
+                val van = vanList[viewHolder.adapterPosition]
+                adapter.removeAt(viewHolder.adapterPosition)
+                vanListViewModel.delete(van)
+                view?.let { Snackbar.make(it, "Van deleted!", Snackbar.LENGTH_SHORT).show() }
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+
         if (vanList.isEmpty()) {
             binding.recyclerView.visibility = View.GONE
             binding.vansNotFound.visibility = View.VISIBLE

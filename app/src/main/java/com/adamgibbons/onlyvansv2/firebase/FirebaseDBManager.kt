@@ -80,7 +80,7 @@ object FirebaseDBManager : VanStore {
         }
         van.id = key
         van.userid = uid
-        FirebaseImageManager.updateVanImage(van, van.imageUri, false)
+        FirebaseImageManager.updateVanImage(van, van.imageUri)
 
         val vanValues = van.toMap()
         val childAdd = HashMap<String, Any>()
@@ -89,32 +89,17 @@ object FirebaseDBManager : VanStore {
         database.updateChildren(childAdd)
     }
 
-    override fun update(van: VanModel) {
-        TODO("Not yet implemented")
-    }
-
     override fun delete(van: VanModel) {
-        TODO("Not yet implemented")
+        val childDelete : MutableMap<String, Any?> = HashMap()
+        childDelete["/vans/${van.id}"] = null
+        database.updateChildren(childDelete)
     }
 
-//    override fun delete(userid: String, donationid: String) {
-//
-//        val childDelete : MutableMap<String, Any?> = HashMap()
-//        childDelete["/donations/$donationid"] = null
-//        childDelete["/user-donations/$userid/$donationid"] = null
-//
-//        database.updateChildren(childDelete)
-//    }
-
-//    override fun update(van: VanModel) {
-//
-//        val vanValues = van.toMap()
-//
-//        val childUpdate : MutableMap<String, Any?> = HashMap()
-//        childUpdate["vans/$vanId"] = vanValues
-//        childUpdate["user-vans/$userId/$vanId"] = vanValues
-//
-//        database.updateChildren(childUpdate)
-//    }
+    override fun update(van: VanModel) {
+        val vanValues = van.toMap()
+        val childUpdate : MutableMap<String, Any?> = HashMap()
+        childUpdate["vans/$van.id"] = vanValues
+        database.updateChildren(childUpdate)
+    }
 
 }

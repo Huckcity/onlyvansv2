@@ -134,6 +134,7 @@ class Login : AppCompatActivity() {
                         Timber.i("DonationX Google Result $result.data")
                     }
                     RESULT_CANCELED -> {
+                        Timber.i(result.data.toString())
 
                     } else -> { }
                 }

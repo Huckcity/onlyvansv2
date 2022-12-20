@@ -1,5 +1,6 @@
 package com.adamgibbons.onlyvansv2.ui.van
 
+import android.annotation.SuppressLint
 import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.view.*
@@ -19,15 +20,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.adamgibbons.onlyvansv2.R
 import com.adamgibbons.onlyvansv2.databinding.FragmentVanAddBinding
+import com.adamgibbons.onlyvansv2.helpers.checkLocationPermissions
 import com.adamgibbons.onlyvansv2.helpers.showImagePicker
 import com.adamgibbons.onlyvansv2.models.Location
 import com.adamgibbons.onlyvansv2.models.VanModel
 import com.adamgibbons.onlyvansv2.ui.login.LoggedInViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import timber.log.Timber
 import java.util.*
-
 
 class VanAddFragment : Fragment() {
 
@@ -38,7 +41,16 @@ class VanAddFragment : Fragment() {
     private var location = Location(52.245696, -7.139102, 15f)
     private lateinit var imageUri: String
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
+    lateinit var locationService: FusedLocationProviderClient
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        locationService = LocationServices.getFusedLocationProviderClient(requireContext())
+        if (checkLocationPermissions(requireActivity())) {
+            doSetCurrentLocation()
+        }
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +58,6 @@ class VanAddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _fragBinding = FragmentVanAddBinding.inflate(inflater, container, false)
-
         setupMenu()
 
         val thisYear: Int = Calendar.getInstance().get(Calendar.YEAR)
@@ -138,6 +149,20 @@ class VanAddFragment : Fragment() {
                     Timber.i("PhotoPicker No media selected")
                 }
             }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun doSetCurrentLocation() {
+        Timber.i("setting location from doSetLocation")
+        locationService.lastLocation.addOnSuccessListener {
+            locationUpdate(it.latitude, it.longitude)
+        }
+    }
+
+    private fun locationUpdate(lat: Double, lng: Double) {
+        location.lat = lat
+        location.lng = lng
+        location.zoom = 15f
     }
 
     override fun onDestroyView() {
