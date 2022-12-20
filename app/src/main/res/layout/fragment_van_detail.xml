@@ -27,131 +27,163 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/vanImage"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/currently_selected_image"
-                    android:padding="5dp"
-                    app:imageUrl="@{vm.van.imageUri}"
-                    app:shapeAppearanceOverlay="@style/customRoundedImageView"
-                    app:strokeColor="@color/purple_500"
-                    app:strokeWidth="5dp" />
+                    android:orientation="vertical">
 
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_margin="15dp"
-                    >
-
-                    <LinearLayout
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/vanImage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:contentDescription="@string/currently_selected_image"
+                        android:padding="5dp"
+                        app:imageUrl="@{vm.van.imageUri}"
+                        app:shapeAppearanceOverlay="@style/customRoundedImageView"
+                        app:strokeColor="@color/purple_500"
+                        app:strokeWidth="5dp" />
 
-                        <com.google.android.material.textview.MaterialTextView
-                            style="@style/TextAppearance.Material3.TitleMedium"
-                            android:layout_marginBottom="10dp"
-
-                            android:id="@+id/vanTitleLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/label_title" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            style="@style/TextAppearance.Material3.TitleMedium"
-                            android:layout_marginBottom="10dp"
-
-                            android:id="@+id/vanYearLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/label_year" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            style="@style/TextAppearance.Material3.TitleMedium"
-                            android:layout_marginBottom="10dp"
-
-                            android:id="@+id/vanEngineSizeLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/label_engine" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            style="@style/TextAppearance.Material3.TitleMedium"
-                            android:layout_marginBottom="10dp"
-
-                            android:id="@+id/vanColorLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/label_color" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            style="@style/TextAppearance.Material3.TitleMedium"
-
-                            android:id="@+id/vanDescriptionLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/label_description" />
-
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginStart="15dp">
+                        android:orientation="horizontal"
+                        android:layout_margin="15dp"
+                        >
 
-                        <com.google.android.material.textview.MaterialTextView
-                            style="@style/TextAppearance.Material3.BodyLarge"
-                            android:layout_marginBottom="10dp"
-
-                            android:id="@+id/vanTitle"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@{vm.van.title}" />
+                            android:orientation="vertical">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            style="@style/TextAppearance.Material3.BodyLarge"
-                            android:layout_marginBottom="10dp"
+                            <com.google.android.material.textview.MaterialTextView
+                                style="@style/TextAppearance.Material3.TitleMedium"
+                                android:layout_marginBottom="10dp"
 
-                            android:id="@+id/vanYear"
-                            android:layout_width="match_parent"
+                                android:id="@+id/vanTitleLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_title" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                style="@style/TextAppearance.Material3.TitleMedium"
+                                android:layout_marginBottom="10dp"
+
+                                android:id="@+id/vanYearLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_year" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                style="@style/TextAppearance.Material3.TitleMedium"
+                                android:layout_marginBottom="10dp"
+
+                                android:id="@+id/vanEngineSizeLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_engine" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                style="@style/TextAppearance.Material3.TitleMedium"
+                                android:layout_marginBottom="10dp"
+
+                                android:id="@+id/vanColorLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_color" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                style="@style/TextAppearance.Material3.TitleMedium"
+                                android:layout_marginBottom="10dp"
+
+                                android:id="@+id/vanAddresssLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_address" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{Integer.toString(vm.van.year)}" />
+                            android:orientation="vertical"
+                            android:layout_marginStart="15dp">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            style="@style/TextAppearance.Material3.BodyLarge"
-                            android:layout_marginBottom="10dp"
+                            <com.google.android.material.textview.MaterialTextView
+                                style="@style/TextAppearance.Material3.BodyLarge"
+                                android:layout_marginBottom="10dp"
 
-                            android:id="@+id/vanEngineSize"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@{Double.toString(vm.van.engine)}" />
+                                android:id="@+id/vanTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.van.title}" />
 
-                        <com.google.android.material.textview.MaterialTextView
-                            style="@style/TextAppearance.Material3.BodyLarge"
-                            android:layout_marginBottom="10dp"
+                            <com.google.android.material.textview.MaterialTextView
+                                style="@style/TextAppearance.Material3.BodyLarge"
+                                android:layout_marginBottom="10dp"
 
-                            android:id="@+id/vanColor"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@{vm.van.color}" />
+                                android:id="@+id/vanYear"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{Integer.toString(vm.van.year)}" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                style="@style/TextAppearance.Material3.BodyLarge"
+                                android:layout_marginBottom="10dp"
+
+                                android:id="@+id/vanEngineSize"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{Double.toString(vm.van.engine)}" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                style="@style/TextAppearance.Material3.BodyLarge"
+                                android:layout_marginBottom="10dp"
+
+                                android:id="@+id/vanColor"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.van.color}" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                style="@style/TextAppearance.Material3.BodyLarge"
+                                android:layout_marginBottom="10dp"
+
+                                android:id="@+id/vanLocation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="@style/TextAppearance.Material3.BodyLarge"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-
-                    android:id="@+id/vanDescription"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.van.description}" />
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/TextAppearance.Material3.TitleMedium"
+                        android:layout_marginStart="16dp"
+
+                        android:id="@+id/vanDescriptionLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_description" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="10dp"
+
+                        android:id="@+id/vanDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.van.description}" />
+
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

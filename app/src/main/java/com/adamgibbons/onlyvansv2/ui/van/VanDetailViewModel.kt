@@ -1,10 +1,14 @@
 package com.adamgibbons.onlyvansv2.ui.van
 
+import android.app.Activity
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.adamgibbons.onlyvansv2.firebase.FirebaseDBManager
+import com.adamgibbons.onlyvansv2.helpers.getAddress
+import com.adamgibbons.onlyvansv2.models.Location
 import com.adamgibbons.onlyvansv2.models.VanModel
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView

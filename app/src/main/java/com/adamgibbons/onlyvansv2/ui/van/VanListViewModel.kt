@@ -27,4 +27,12 @@ class VanListViewModel : ViewModel() {
             Timber.i("Error fetching vans : ${e.message}")
         }
     }
+
+    fun delete(van: VanModel) {
+        try {
+            FirebaseDBManager.delete(van)
+        } catch(e: Exception) {
+            Timber.i("Error deleting van: ${e.message}")
+        }
+    }
 }

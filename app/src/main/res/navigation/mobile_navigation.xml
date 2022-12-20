@@ -40,11 +40,5 @@
         android:id="@+id/vanAddFragment"
         android:name="com.adamgibbons.onlyvansv2.ui.van.VanAddFragment"
         android:label="@string/action_add_van"
-        tools:layout="@layout/fragment_van_add" >
-        <action
-            android:id="@+id/action_vanAddFragment_to_vanListFragment"
-            app:destination="@id/home"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"/>
-    </fragment>
+        tools:layout="@layout/fragment_van_add" />
 </navigation>
