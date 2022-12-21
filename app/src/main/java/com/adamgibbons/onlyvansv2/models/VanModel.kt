@@ -26,7 +26,8 @@ data class VanModel(
             "color" to color,
             "year" to year,
             "engine" to engine,
-            "location" to location
+            "location" to location,
+            "userid" to userid
         )
     }
 }

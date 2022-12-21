@@ -96,9 +96,11 @@ object FirebaseDBManager : VanStore {
     }
 
     override fun update(van: VanModel) {
+        FirebaseImageManager.updateVanImage(van, van.imageUri)
+
         val vanValues = van.toMap()
         val childUpdate : MutableMap<String, Any?> = HashMap()
-        childUpdate["vans/$van.id"] = vanValues
+        childUpdate["vans/${van.id}"] = vanValues
         database.updateChildren(childUpdate)
     }
 

@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
 import com.adamgibbons.onlyvansv2.R
 import com.adamgibbons.onlyvansv2.databinding.FragmentVanAddBinding
@@ -25,6 +26,7 @@ import com.adamgibbons.onlyvansv2.helpers.showImagePicker
 import com.adamgibbons.onlyvansv2.models.Location
 import com.adamgibbons.onlyvansv2.models.VanModel
 import com.adamgibbons.onlyvansv2.ui.login.LoggedInViewModel
+import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
@@ -34,13 +36,16 @@ import java.util.*
 
 class VanAddFragment : Fragment() {
 
+    private val args by navArgs<VanAddFragmentArgs>()
     private var _fragBinding: FragmentVanAddBinding? = null
     private val binding get() = _fragBinding!!
     private lateinit var imageIntentLauncher: ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var vanAddViewModel: VanAddViewModel
-    private var location = Location(52.245696, -7.139102, 15f)
-    private lateinit var imageUri: String
+    private lateinit var vanEditViewModel: VanDetailViewModel
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
+
+    private var location = Location(52.245696, -7.139102, 15f)
+    private var imageUri: String = ""
     lateinit var locationService: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,14 +71,39 @@ class VanAddFragment : Fragment() {
         (_fragBinding!!.yearPickerTextField.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(stringArray)
 
         vanAddViewModel = ViewModelProvider(this)[VanAddViewModel::class.java]
+        vanEditViewModel = ViewModelProvider(this)[VanDetailViewModel::class.java]
+        if (args.vanid == "") {
+            Timber.i("No van id, render empty form")
+        } else {
+            vanEditViewModel.observableVan.observe(viewLifecycleOwner) { van ->
+                binding.vanTitle.setText(van.title)
+                binding.vanDescription.setText(van.description)
+                binding.btnAdd.setText(R.string.update_van)
+                binding.chooseImage.setText(R.string.change_image)
+                if (imageUri != "") {
+                    Glide.with(this).load(imageUri).into(binding.vanImage);
+                } else {
+                    Glide.with(this).load(van.imageUri).into(binding.vanImage);
+                }
+                binding.colorPicker.setText(van.color, false)
+                binding.enginePicker.setText(van.engine.toString(), false)
+                binding.yearPicker.setText(van.year.toString(), false)
+                location = van.location
+            }
+        }
         vanAddViewModel.observableStatus.observe(viewLifecycleOwner, Observer {
-                status -> status?.let { render(status) }
+                status ->
+                status?.let { render(status) }
         })
 
         registerImagePickerCallback()
 
         binding.btnAdd.setOnClickListener {
-            addVan()
+            if (args.vanid != "") {
+                editVan()
+            } else {
+                addVan()
+            }
         }
 
         binding.chooseImage.setOnClickListener {
@@ -131,6 +161,28 @@ class VanAddFragment : Fragment() {
 
     }
 
+    private fun editVan() {
+        try {
+            vanAddViewModel.editVan(VanModel(
+                id = args.vanid,
+                userid = loggedInViewModel.liveFirebaseUser.value!!.uid,
+                title = binding.vanTitle.text.toString(),
+                description = binding.vanDescription.text.toString(),
+                color = binding.colorPicker.text.toString(),
+                engine = binding.enginePicker.text.toString().toDouble(),
+                year = binding.yearPicker.text.toString().toInt(),
+                location = location,
+                imageUri = imageUri
+            ),
+                loggedInViewModel.liveFirebaseUser)
+
+        } catch (exception: java.lang.Exception) {
+            Timber.i("All fields are required $exception")
+            view?.let { Snackbar.make(it, "All fields are required!", Snackbar.LENGTH_LONG).show() }
+        }
+
+    }
+
     private fun addVanImage() {
         showImagePicker(imageIntentLauncher)
     }
@@ -163,6 +215,13 @@ class VanAddFragment : Fragment() {
         location.lat = lat
         location.lng = lng
         location.zoom = 15f
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (args.vanid != "") {
+            vanEditViewModel.getVan(args.vanid)
+        }
     }
 
     override fun onDestroyView() {
