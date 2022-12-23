@@ -5,6 +5,7 @@ import com.adamgibbons.onlyvansv2.models.VanModel
 import com.adamgibbons.onlyvansv2.models.VanStore
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
 import timber.log.Timber
 
 object FirebaseDBManager : VanStore {
@@ -93,6 +94,28 @@ object FirebaseDBManager : VanStore {
         val childDelete : MutableMap<String, Any?> = HashMap()
         childDelete["/vans/${van.id}"] = null
         database.updateChildren(childDelete)
+    }
+
+    override fun findAllImages(images: MutableLiveData<List<String>>) {
+        database.child("vans")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<String>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val van = it.getValue(VanModel::class.java)
+                        localList.add(van!!.imageUri)
+                    }
+                    database.child("vans")
+                        .removeEventListener(this)
+
+                    images.value = localList
+                }
+            })
     }
 
     override fun update(van: VanModel) {
