@@ -2,14 +2,12 @@ package com.adamgibbons.onlyvansv2.ui.van
 
 import android.os.Bundle
 import android.view.*
-import android.widget.TextView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -21,6 +19,7 @@ import com.adamgibbons.onlyvansv2.adapters.VanAdapter
 import com.adamgibbons.onlyvansv2.adapters.VanListener
 import com.adamgibbons.onlyvansv2.databinding.FragmentVanListBinding
 import com.adamgibbons.onlyvansv2.helpers.SwipeToDeleteCallback
+import com.adamgibbons.onlyvansv2.helpers.SwipeToEditCallback
 import com.adamgibbons.onlyvansv2.models.VanModel
 import com.adamgibbons.onlyvansv2.ui.login.LoggedInViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -57,7 +56,7 @@ class VanListFragment : Fragment(), VanListener {
 
     private fun render(vanList: ArrayList<VanModel>) {
         binding.recyclerView.adapter = VanAdapter(vanList,this)
-        val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
+        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = binding.recyclerView.adapter as VanAdapter
                 val van = vanList[viewHolder.adapterPosition]
@@ -67,8 +66,20 @@ class VanListFragment : Fragment(), VanListener {
             }
         }
 
-        val itemTouchHelper = ItemTouchHelper(swipeHandler)
-        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+        val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = binding.recyclerView.adapter as VanAdapter
+                val van = vanList[viewHolder.adapterPosition]
+                adapter.removeAt(viewHolder.adapterPosition)
+                editVan(van)
+                view?.let { Snackbar.make(it, "Editing Van: ${van.title}", Snackbar.LENGTH_SHORT).show() }
+            }
+        }
+
+        val itemTouchHelper1 = ItemTouchHelper(swipeDeleteHandler)
+        val itemTouchHelper2 = ItemTouchHelper(swipeEditHandler)
+        itemTouchHelper1.attachToRecyclerView(binding.recyclerView)
+        itemTouchHelper2.attachToRecyclerView(binding.recyclerView)
 
         if (vanList.isEmpty()) {
             binding.recyclerView.visibility = View.GONE
@@ -86,6 +97,11 @@ class VanListFragment : Fragment(), VanListener {
 
     override fun onVanClick(van: VanModel) {
         val action = VanListFragmentDirections.actionHomeFragmentToVanDetailFragment(van.id)
+        findNavController().navigate(action)
+    }
+
+    fun editVan(van: VanModel) {
+        val action = VanListFragmentDirections.actionHomeFragmentToVanEditFragment(van.id)
         findNavController().navigate(action)
     }
 

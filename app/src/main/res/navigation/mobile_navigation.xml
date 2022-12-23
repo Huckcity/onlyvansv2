@@ -18,6 +18,14 @@
         <action
             android:id="@+id/action_homeFragment_to_vanAddFragment"
             app:destination="@id/vanAddFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_vanEditFragment"
+            app:destination="@id/vanAddFragment">
+            <argument
+                android:name="vanid"
+                app:argType="string"
+                android:defaultValue="" />
+        </action>
     </fragment>
 
     <fragment
@@ -40,5 +48,10 @@
         android:id="@+id/vanAddFragment"
         android:name="com.adamgibbons.onlyvansv2.ui.van.VanAddFragment"
         android:label="@string/action_add_van"
-        tools:layout="@layout/fragment_van_add" />
+        tools:layout="@layout/fragment_van_add">
+        <argument
+            android:name="vanid"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
 </navigation>

@@ -25,4 +25,16 @@ class VanAddViewModel : ViewModel() {
         }
     }
 
+    fun editVan(van: VanModel, user: MutableLiveData<FirebaseUser>) {
+        println("Editing van: $van")
+        status.value = try {
+            if (van.userid == user.value?.uid) {
+                FirebaseDBManager.update(van)
+            }
+            true
+        } catch (e: IllegalArgumentException) {
+            println("Failed to edit van: $e.message")
+            false
+        }
+    }
 }

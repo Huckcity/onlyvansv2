@@ -35,4 +35,8 @@ class VanListViewModel : ViewModel() {
             Timber.i("Error deleting van: ${e.message}")
         }
     }
+
+    fun edit(van: VanModel) {
+
+    }
 }
