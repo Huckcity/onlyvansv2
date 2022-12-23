@@ -10,4 +10,5 @@ interface VanStore {
     fun create(van: VanModel, user: MutableLiveData<FirebaseUser>)
     fun update(van: VanModel)
     fun delete(van: VanModel)
+    fun findAllImages(images: MutableLiveData<List<String>>)
 }
