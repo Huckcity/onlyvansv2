@@ -7,6 +7,7 @@ import android.location.Address
 import android.location.Geocoder
 import androidx.core.app.ActivityCompat
 import com.adamgibbons.onlyvansv2.models.Location
+import com.google.android.gms.maps.model.LatLng
 import java.util.*
 
 const val REQUEST_PERMISSIONS_REQUEST_CODE = 34
@@ -19,6 +20,10 @@ fun checkLocationPermissions(activity: Activity) : Boolean {
         ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_PERMISSIONS_REQUEST_CODE)
         false
     }
+}
+
+fun locationToLatLng(location: Location): LatLng {
+    return LatLng(location.lat, location.lng)
 }
 
 fun getAddress(activity: Activity, latLng: Location): String {

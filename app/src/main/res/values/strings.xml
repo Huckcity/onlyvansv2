@@ -99,4 +99,5 @@
     <string name="label_engine">Engine:</string>
     <string name="label_color">Color:</string>
     <string name="label_address">Address:</string>
+    <string name="menu_map">Map</string>
 </resources>
