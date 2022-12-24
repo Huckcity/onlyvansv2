@@ -20,7 +20,7 @@
     <string name="menu_cancelAddVan">Cancel</string>
     <string name="vanAdd">Add</string>
     <string name="update_van">Update Van</string>
-    <string name="currently_selected_image">Currently Selected Image</string>
+    <string name="currently_selected_image">Current Image</string>
     <string name="button_addImage">Choose Image</string>
     <string name="change_image">Choose New Image</string>
     <string name="select_van_image">Select Image</string>
@@ -53,6 +53,7 @@
         <item>Blue</item>
         <item>Black</item>
         <item>White</item>
+        <item>Pink</item>
     </string-array>
 
     <string-array name="engines_array">
@@ -82,4 +83,22 @@
     <string name="addVanError">Failed to add van!</string>
     <string name="menu_van">Vans</string>
     <string name="add_van">Add Van</string>
+
+
+
+
+
+    <string name="emailpassword_title_text">Please Login Below</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="hint_email">Email</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="verify_email">Verify Email</string>
+    <string name="auth_failed">Failed to authorise!</string>
+    <string name="label_title">Title:</string>
+    <string name="label_description">Description:</string>
+    <string name="label_year">Year:</string>
+    <string name="label_engine">Engine:</string>
+    <string name="label_color">Color:</string>
+    <string name="label_address">Address:</string>
+    <string name="menu_map">Map</string>
 </resources>

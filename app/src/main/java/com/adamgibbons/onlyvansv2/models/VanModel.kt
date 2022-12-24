@@ -9,11 +9,12 @@ data class VanModel(
     var id: String = "",
     var title: String = "",
     var description: String = "",
-    var image64: String = "",
+    var imageUri: String = "",
     var color: String = "",
     var year: Int = 2022,
     var engine: Double = 2.0,
-    var location: Location = Location()
+    var location: Location = Location(),
+    var userid: String = ""
 ) : Parcelable {
     @Exclude
     fun toMap(): Map<String, Any?> {
@@ -21,11 +22,12 @@ data class VanModel(
             "id" to id,
             "title" to title,
             "description" to description,
-            "image64" to image64,
+            "imageUri" to imageUri,
             "color" to color,
             "year" to year,
             "engine" to engine,
-            "location" to location
+            "location" to location,
+            "userid" to userid
         )
     }
 }

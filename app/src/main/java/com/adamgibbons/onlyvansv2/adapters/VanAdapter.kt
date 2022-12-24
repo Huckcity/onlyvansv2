@@ -2,10 +2,16 @@ package com.adamgibbons.onlyvansv2.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.core.net.toUri
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.adamgibbons.onlyvansv2.databinding.CardVanBinding
-import com.adamgibbons.onlyvansv2.helpers.decodeImage
+import com.adamgibbons.onlyvansv2.helpers.customTransformation
 import com.adamgibbons.onlyvansv2.models.VanModel
+import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
+
 
 interface VanListener {
     fun onVanClick(van: VanModel)
@@ -38,10 +44,13 @@ class VanAdapter constructor(private var vans: List<VanModel>,
         fun bind(van: VanModel, listener: VanListener) {
             binding.vanTitle.text = van.title
             binding.vanDescription.text = van.description
-            if (van.image64.isNotEmpty()) {
-                binding.imageIcon.setImageBitmap(decodeImage(van.image64))
-            }
+            Picasso.get().load(van.imageUri.toUri())
+                .resize(200, 200)
+                .transform(customTransformation())
+                .centerCrop()
+                .into(binding.vanThumbnail)
             binding.root.setOnClickListener { listener.onVanClick(van) }
+            binding.executePendingBindings()
         }
     }
 
