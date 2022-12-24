@@ -9,7 +9,7 @@
         android:id="@+id/homeFragment"
         android:name="com.adamgibbons.onlyvansv2.ui.van.VanListFragment"
         android:label="@string/action_van"
-        tools:layout="@layout/fragment_van_list" >
+        tools:layout="@layout/fragment_van_list">
         <action
             android:id="@+id/action_homeFragment_to_vanDetailFragment"
             app:destination="@id/vanDetailFragment"
@@ -54,4 +54,19 @@
             app:argType="string"
             android:defaultValue="" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_map"
+        android:name="com.adamgibbons.onlyvansv2.ui.map.MapsFragment"
+        android:label="@string/menu_map"
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_nav_map_to_vanDetailFragment"
+            app:destination="@id/vanDetailFragment">
+            <argument
+                android:name="vanid"
+                app:argType="string" />
+        </action>
+    </fragment>
+
 </navigation>

@@ -45,7 +45,8 @@ class VanAddFragment : Fragment() {
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
 
     private var location = Location(52.245696, -7.139102, 15f)
-    private var imageUri: String = ""
+    private lateinit var oldImageUri: String
+    private var newImageUri: String = ""
     lateinit var locationService: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,14 +77,15 @@ class VanAddFragment : Fragment() {
             Timber.i("No van id, render empty form")
         } else {
             vanEditViewModel.observableVan.observe(viewLifecycleOwner) { van ->
+                oldImageUri = van.imageUri
                 binding.vanTitle.setText(van.title)
                 binding.vanDescription.setText(van.description)
                 binding.btnAdd.setText(R.string.update_van)
                 binding.chooseImage.setText(R.string.change_image)
-                if (imageUri != "") {
-                    Glide.with(this).load(imageUri).into(binding.vanImage);
+                if (newImageUri != "") {
+                    Glide.with(this).load(newImageUri).into(binding.vanImage)
                 } else {
-                    Glide.with(this).load(van.imageUri).into(binding.vanImage);
+                    Glide.with(this).load(van.imageUri).into(binding.vanImage)
                 }
                 binding.colorPicker.setText(van.color, false)
                 binding.enginePicker.setText(van.engine.toString(), false)
@@ -150,7 +152,7 @@ class VanAddFragment : Fragment() {
                 engine = binding.enginePicker.text.toString().toDouble(),
                 year = binding.yearPicker.text.toString().toInt(),
                 location = location,
-                imageUri = imageUri
+                imageUri = newImageUri
             ),
             loggedInViewModel.liveFirebaseUser)
 
@@ -172,7 +174,7 @@ class VanAddFragment : Fragment() {
                 engine = binding.enginePicker.text.toString().toDouble(),
                 year = binding.yearPicker.text.toString().toInt(),
                 location = location,
-                imageUri = imageUri
+                imageUri = if (newImageUri != "") newImageUri else oldImageUri
             ),
                 loggedInViewModel.liveFirebaseUser)
 
@@ -193,7 +195,7 @@ class VanAddFragment : Fragment() {
             { uri ->
                 if (uri != null) {
                     Timber.i("PhotoPicker Selected URI: $uri")
-                    imageUri = uri.toString()
+                    newImageUri = uri.toString()
                     val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
                     val bitmap = ImageDecoder.decodeBitmap(source)
                     binding.vanImage.setImageBitmap(bitmap)
