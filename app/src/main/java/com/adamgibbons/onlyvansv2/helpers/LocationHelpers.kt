@@ -26,6 +26,7 @@ fun locationToLatLng(location: Location): LatLng {
     return LatLng(location.lat, location.lng)
 }
 
+// Yoinked from random Stack Overflow post.
 fun getAddress(activity: Activity, latLng: Location): String {
     val geocoder = Geocoder(activity.applicationContext, Locale.getDefault())
     val address: Address?
@@ -38,7 +39,7 @@ fun getAddress(activity: Activity, latLng: Location): String {
             address = addresses[0]
             addressText = address.getAddressLine(0)
         } else{
-            addressText = "its not appear"
+            addressText = "its not appear" // I'm not even going to change the poor grammar
         }
     }
     return addressText

@@ -4,32 +4,50 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.adamgibbons.onlyvansv2.R
+import com.adamgibbons.onlyvansv2.databinding.FragmentMapsBinding
+import com.adamgibbons.onlyvansv2.helpers.customTransformation
 import com.adamgibbons.onlyvansv2.helpers.locationToLatLng
-import com.google.android.gms.maps.CameraUpdateFactory
+import com.adamgibbons.onlyvansv2.models.VanModel
+import com.adamgibbons.onlyvansv2.ui.van.VanDetailViewModel
+import com.adamgibbons.onlyvansv2.ui.van.VanListFragmentDirections
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.squareup.picasso.Picasso
 
 class MapsFragment : Fragment() {
 
+    private var _binding: FragmentMapsBinding? = null
+    private val binding get() = _binding!!
     private val mapsViewModel : MapsViewModel by activityViewModels()
+
     private val callback = OnMapReadyCallback { googleMap ->
 
-        val sydney = LatLng(-34.0, 151.0)
-//        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-//        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
         mapsViewModel.load()
-
         mapsViewModel.observableVansList.observe(viewLifecycleOwner, Observer { vans ->
             vans?.let {
-                for (van in vans) {
-                    println("MAP THIS $van")
-                    googleMap.addMarker(MarkerOptions().position(locationToLatLng(van.location)))
+                for (v in vans) {
+
+                    googleMap.addMarker(
+                        MarkerOptions()
+                        .position(locationToLatLng(v.location))
+                        .title(v.id)
+                        .draggable(true)
+                    )
+
+                    googleMap.setOnMarkerClickListener {
+                        it.title?.let { it1 -> mapsViewModel.getVan(it1) }
+
+                        true
+                    }
                 }
             }
         })
@@ -39,8 +57,28 @@ class MapsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_maps, container, false)
+    ): View {
+        _binding = FragmentMapsBinding.inflate(inflater, container, false)
+        binding.mapVanCard.visibility = View.INVISIBLE
+
+        mapsViewModel.observableVan.observe(viewLifecycleOwner) { van ->
+            binding.vm = mapsViewModel
+            binding.mapVanCard.visibility = View.VISIBLE
+            binding.vanTitle.text = van.title
+            binding.vanDescription.text = van.description
+            Picasso.get().load(van.imageUri.toUri())
+                .resize(200, 200)
+                .transform(customTransformation())
+                .centerCrop()
+                .into(binding.vanThumbnail)
+
+            binding.mapVanCard.setOnClickListener {
+                val action = MapsFragmentDirections.actionNavMapToVanDetailFragment(van.id)
+                findNavController().navigate(action)
+            }
+        }
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

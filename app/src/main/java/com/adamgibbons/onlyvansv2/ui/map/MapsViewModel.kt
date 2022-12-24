@@ -10,6 +10,24 @@ import timber.log.Timber
 
 class MapsViewModel : ViewModel() {
 
+    val van = MutableLiveData<VanModel>()
+    var observableVan: LiveData<VanModel>
+        get() = van
+        set(value) {
+            van.value = value.value
+        }
+
+    fun getVan(id: String) {
+        try {
+            FirebaseDBManager.findById(van, id)
+            Timber.i("Fetching Van Details : ${
+                van.value.toString()}")
+        }
+        catch (e: Exception) {
+            Timber.i("Failed to retrieve van details : $e.message")
+        }
+    }
+
     private val vanList = MutableLiveData<List<VanModel>>()
     var user = MutableLiveData<FirebaseUser>()
 

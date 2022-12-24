@@ -53,6 +53,7 @@
         <item>Blue</item>
         <item>Black</item>
         <item>White</item>
+        <item>Pink</item>
     </string-array>
 
     <string-array name="engines_array">

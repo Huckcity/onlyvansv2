@@ -108,15 +108,11 @@ class VanListFragment : Fragment(), VanListener {
     private fun setupMenu() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onPrepareMenu(menu: Menu) {
-                // Handle for example visibility of menu items
             }
-
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_add_van, menu)
             }
-
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // Validate and handle the selected menu item
                 return NavigationUI.onNavDestinationSelected(menuItem,
                     requireView().findNavController())
             }

@@ -20,7 +20,6 @@ class GalleryFragment : Fragment() {
     private var _binding: FragmentGalleryBinding? = null
     private val binding get() = _binding!!
 
-    private val loggedInViewModel: LoggedInViewModel by activityViewModels()
     private val galleryViewModel: GalleryViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -31,19 +30,13 @@ class GalleryFragment : Fragment() {
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        val textView: TextView = binding.textGallery
-
         galleryViewModel.images.observe(viewLifecycleOwner, Observer { images ->
             images?.let {
-//                textView.text = "No images found..."
                 binding.recyclerView.adapter = ImagesAdapter(images)
-
                 if (images.isEmpty()) {
                     binding.recyclerView.visibility = View.GONE
-//                    binding.textGallery.visibility = View.VISIBLE
                 } else {
                     binding.recyclerView.visibility = View.VISIBLE
-//                    binding.textGallery.visibility = View.GONE
                 }
             }
         })
